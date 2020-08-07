@@ -2,6 +2,12 @@
 __pycache__/
 *.py[cod]
 *$py.class
+data/test_data
+data/train_data
+data/WFLW
+.idea
+.DS_Store
+output
 
 # C extensions
 *.so

@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-#-*- coding:utf-8 -*-
-
 import argparse
 import logging
 from pathlib import Path
@@ -23,6 +20,7 @@ from pfld.loss import PFLDLoss
 from pfld.utils import AverageMeter
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 def print_args(args):
     for arg in vars(args):
@@ -83,7 +81,7 @@ def validate(wlfw_val_dataloader, plfd_backbone, auxiliarynet, criterion):
             loss = torch.mean(torch.sum((landmark_gt - landmark)**2, axis=1))
             losses.append(loss.cpu().numpy())
     print("===> Evaluate:")
-    print('Eval set: Average loss: {:.4f} '.format(np.mean(losses))
+    print('Eval set: Average loss: {:.4f} '.format(np.mean(losses)))
     return np.mean(losses)
 
 
@@ -137,7 +135,7 @@ def main(args):
         weighted_train_loss, train_loss = train(dataloader, plfd_backbone, auxiliarynet,
                                       criterion, optimizer, epoch)
         filename = os.path.join(
-            str(args.snapshot), "checkpoint_epoch_" + str(epoch) + '.pth.tar')
+            str(args.snapshot), "checkpoint_epoch_" + str(epoch) + '.pth')
         save_checkpoint({
             'epoch': epoch,
             'plfd_backbone': plfd_backbone.state_dict(),
@@ -161,7 +159,7 @@ def parse_args():
     parser.add_argument('--test_initial', default='false', type=str2bool)  #TBD
 
     # training
-    ##  -- optimizer
+    # -- optimizer
     parser.add_argument('--base_lr', default=0.0001, type=int)
     parser.add_argument('--weight-decay', '--wd', default=1e-6, type=float)
 

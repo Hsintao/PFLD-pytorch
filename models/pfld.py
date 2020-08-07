@@ -157,12 +157,18 @@ class AuxiliaryNet(nn.Module):
         return x
 
 
-# if __name__ == '__main__':
-#     input = torch.randn(1, 3, 112, 112)
-#     plfd_backbone = PFLDInference()
-#     auxiliarynet = AuxiliaryNet()
-#     features, landmarks = plfd_backbone(input)
-#     angle = auxiliarynet(features)
-
-#     print("angle.shape:{0:}, landmarks.shape: {1:}".format(
-#         angle.shape, landmarks.shape))
+if __name__ == '__main__':
+    input = torch.randn(8, 3, 112, 112)
+    plfd_backbone = PFLDInference()
+    auxiliarynet = AuxiliaryNet()
+    import time
+    tic = time.time()
+    N = 50
+    for i in range(N):
+        features, landmarks = plfd_backbone(input)
+    average_infer_time = (time.time() - tic) / N
+    print("averager inference time: {:.4f}, FPS: {:.2f}".format(average_infer_time / input.shape[0],
+                                                                1 * input.shape[0] / average_infer_time))
+    angle = auxiliarynet(features)
+    print("angle.shape:{0:}, landmarks.shape: {1:}".format(
+        angle.shape, landmarks.shape))
