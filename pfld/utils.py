@@ -63,6 +63,7 @@ def calculate_pitch_yaw_roll(landmarks_2D, cam_w=256, cam_h=256,
     _, _, _, _, _, _, euler_angles = cv2.decomposeProjectionMatrix(pose_mat)
     return map(lambda k: k[0], euler_angles) # euler_angles contain (pitch, yaw, roll)
 
+
 class AverageMeter(object):
     """Computes and stores the average and current value"""
 
