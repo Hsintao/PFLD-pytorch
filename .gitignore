@@ -8,7 +8,7 @@ data/WFLW
 .idea
 .DS_Store
 output
-
+data/WFLW_images.tar.gz
 # C extensions
 *.so
 
