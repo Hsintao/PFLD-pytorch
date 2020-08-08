@@ -12,6 +12,7 @@ from mtcnn.detector import detect_faces, show_bboxes
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+
 def main(args):
     checkpoint = torch.load(args.model_path, map_location=device)
     plfd_backbone = PFLDInference().to(device)
@@ -53,7 +54,7 @@ def main(args):
             y2 = min(height, y2)
 
             cropped = img[y1:y2, x1:x2]
-            if (dx > 0 or dy > 0 or edx > 0 or edy > 0):
+            if dx > 0 or dy > 0 or edx > 0 or edy > 0:
                 cropped = cv2.copyMakeBorder(cropped, dy, edy, dx, edx, cv2.BORDER_CONSTANT, 0)
             
             cropped = cv2.resize(cropped, (112, 112))
@@ -72,7 +73,6 @@ def main(args):
             break
 
 
-
 def parse_args():
     parser = argparse.ArgumentParser(description='Testing')
     parser.add_argument(
@@ -85,4 +85,5 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    main(args)
+    with torch.no_grad():
+        main(args)

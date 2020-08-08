@@ -24,6 +24,7 @@ cudnn.determinstic = True
 cudnn.enabled = True
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+
 def compute_nme(preds, target):
     """ preds/target:: numpy array, shape is (N, L, 2)
         N: batchsize L: num of landmark 
@@ -49,6 +50,7 @@ def compute_nme(preds, target):
 
     return rmse
 
+
 def compute_auc(errors, failureThreshold, step=0.0001, showCurve=True):
     nErrors = len(errors)
     xAxis = list(np.arange(0., failureThreshold + step, step))
@@ -62,6 +64,7 @@ def compute_auc(errors, failureThreshold, step=0.0001, showCurve=True):
         plt.show()
 
     return AUC, failureRate 
+
 
 def validate(wlfw_val_dataloader, plfd_backbone):
     plfd_backbone.eval()
@@ -93,7 +96,7 @@ def validate(wlfw_val_dataloader, plfd_backbone):
                 img_clone = cv2.imread("xxx.jpg")
 
                 for (x, y) in pre_landmark.astype(np.int32):
-                    cv2.circle(img_clone, (x, y), 1, (255,0,0),-1)
+                    cv2.circle(img_clone, (x, y), 1, (255, 0, 0),-1)
                 cv2.imshow("xx.jpg", img_clone)
                 cv2.waitKey(0)
 
@@ -111,6 +114,7 @@ def validate(wlfw_val_dataloader, plfd_backbone):
         # inference time
         print("inference_cost_time: {0:4f}".format(np.mean(cost_time)))
 
+
 def main(args):
     checkpoint = torch.load(args.model_path, map_location=device)
     plfd_backbone = PFLDInference().to(device)
@@ -122,13 +126,15 @@ def main(args):
 
     validate(wlfw_val_dataloader, plfd_backbone)
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Testing')
     parser.add_argument('--model_path', default="./checkpoint/snapshot/checkpoint.pth.tar", type=str)
     parser.add_argument('--test_dataset', default='./data/test_data/list.txt', type=str)
-    parser.add_argument('--show_image', default=False, type=bool)
+    parser.add_argument('--show_image', default=True, type=bool)
     args = parser.parse_args()
     return args
+
 
 if __name__ == "__main__":
     args = parse_args()

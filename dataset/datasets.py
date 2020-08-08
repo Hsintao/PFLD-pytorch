@@ -81,6 +81,7 @@ def random_hue(image, annotation, hue=0.5):
     image = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
     return image, annotation
 
+
 def scale(img, annotation):
     f_xy = np.random.uniform(-0.4, 0.8)
     origin_h, origin_w = img.shape[:2]
@@ -137,11 +138,6 @@ def rotate(img, annotation, alpha=30):
     return img_rotated_by_alpha, new_annotation
 
 
-
-
-
-
-
 class WLFWDatasets(data.Dataset):
     def __init__(self, file_list, transforms=None):
         self.line = None
@@ -162,10 +158,11 @@ class WLFWDatasets(data.Dataset):
         self.euler_angle = np.asarray(self.line[203:206], dtype=np.float32)
         if self.transforms:
             self.img = self.transforms(self.img)
-        return (self.img, self.landmark, self.attribute, self.euler_angle)
+        return self.img, self.landmark, self.attribute, self.euler_angle
 
     def __len__(self):
         return len(self.lines)
+
 
 if __name__ == '__main__':
     file_list = './data/test_data/list.txt'

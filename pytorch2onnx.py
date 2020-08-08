@@ -2,7 +2,6 @@ import onnx
 import os
 import argparse
 from models.pfld import PFLDInference
-from torch.autograd import Variable
 import torch
 import onnxsim
 
