@@ -9,8 +9,8 @@ import time
 import cv2
 
 
-onnx_model_path = "/Users/xintao/Desktop/人脸106关键点检测项目/PFLD-pytorch/output/pfld-sim.onnx"
-img_path = '/Users/xintao/Desktop/人脸106关键点检测项目/PFLD-pytorch/data/test_data/imgs/0_37_Soccer_soccer_ball_37_45_0.png'
+onnx_model_path = "./output/pfld-sim.onnx"
+img_path = "1.png"
 img = cv2.imread(img_path)
 show_img = True
 
@@ -30,9 +30,10 @@ for i in range(100):
 t = (time.time() - tic) / 100
 print('average infer time: {:.4f}ms, FPS: {:.2f}'.format(t, 1 / t))
 print('output.shape: ', output.shape)
+# print(output[0])
 if show_img:
     landmarks = output.reshape(-1, 2) * 112
     img_copy = img.copy().astype(np.uint8)
     for (x, y) in landmarks.astype(np.int32):
-        cv2.circle(img_copy, (x, y), 1, (255, 0, 0), -1)
+        cv2.circle(img_copy, (x, y), 1, (0, 0, 255), -1)
     cv2.imwrite('result.jpg', img_copy)
