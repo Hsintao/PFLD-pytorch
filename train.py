@@ -53,10 +53,11 @@ def train(train_loader, plfd_backbone, auxiliarynet, criterion, optimizer,
         euler_angle_gt = euler_angle_gt.to(device)
         plfd_backbone = plfd_backbone.to(device)
         auxiliarynet = auxiliarynet.to(device)
+
         features, landmarks = plfd_backbone(img)
         angle = auxiliarynet(features)
         weighted_loss, loss = criterion(attribute_gt, landmark_gt, euler_angle_gt,
-                                    angle, landmarks, args.train_batchsize)
+                                        angle, landmarks, args.train_batchsize)
         optimizer.zero_grad()
         weighted_loss.backward()
         optimizer.step()

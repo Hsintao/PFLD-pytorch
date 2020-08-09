@@ -8,7 +8,7 @@ import onnxsim
 parser = argparse.ArgumentParser(description='pytorch2onnx')
 parser.add_argument(
     '--torch_model',
-    default="./checkpoint/snapshot/checkpoint.pth.tar")
+    default="/Users/xintao/Desktop/checkpoint_epoch_131.pth")
 parser.add_argument('--onnx_model', default="./output/pfld.onnx")
 parser.add_argument(
     '--onnx_model_sim',

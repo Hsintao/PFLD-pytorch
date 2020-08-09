@@ -36,7 +36,7 @@ def compute_nme(preds, target):
     for i in range(N):
         pts_pred, pts_gt = preds[i, ], target[i, ]
         if L == 19:  # aflw
-            interocular = 34 # meta['box_size'][i]
+            interocular = 34  # meta['box_size'][i]
         elif L == 29:  # cofw
             interocular = np.linalg.norm(pts_gt[8, ] - pts_gt[9, ])
         elif L == 68:  # 300w
@@ -54,7 +54,7 @@ def compute_nme(preds, target):
 def compute_auc(errors, failureThreshold, step=0.0001, showCurve=True):
     nErrors = len(errors)
     xAxis = list(np.arange(0., failureThreshold + step, step))
-    ced =  [float(np.count_nonzero([errors <= x])) / nErrors for x in xAxis]
+    ced = [float(np.count_nonzero([errors <= x])) / nErrors for x in xAxis]
 
     AUC = simps(ced, x=xAxis) / failureThreshold
     failureRate = 1. - ced[-1]
@@ -82,8 +82,8 @@ def validate(wlfw_val_dataloader, plfd_backbone):
             cost_time.append(time.time() - start_time)
 
             landmarks = landmarks.cpu().numpy()
-            landmarks = landmarks.reshape(landmarks.shape[0], -1, 2) # landmark 
-            landmark_gt = landmark_gt.reshape(landmark_gt.shape[0], -1, 2).cpu().numpy() # landmark_gt
+            landmarks = landmarks.reshape(landmarks.shape[0], -1, 2)  # landmark
+            landmark_gt = landmark_gt.reshape(landmark_gt.shape[0], -1, 2).cpu().numpy()  # landmark_gt
 
             if args.show_image:
                 show_img = np.array(np.transpose(img[0].cpu().numpy(), (1, 2, 0)))
@@ -108,7 +108,7 @@ def validate(wlfw_val_dataloader, plfd_backbone):
         print('nme: {:.4f}'.format(np.mean(nme_list)))
         # auc and failure rate
         failureThreshold = 0.1
-        auc, failure_rate = compute_auc(nme_list, failureThreshold)
+        auc, failure_rate = compute_auc(nme_list, failureThreshold, False)
         print('auc @ {:.1f} failureThreshold: {:.4f}'.format(failureThreshold, auc))
         print('failure_rate: {:}'.format(failure_rate))
         # inference time
@@ -129,9 +129,9 @@ def main(args):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Testing')
-    parser.add_argument('--model_path', default="./checkpoint/snapshot/checkpoint.pth.tar", type=str)
+    parser.add_argument('--model_path', default="./checkpoint/snapshot/checkpoint_epoch_168.pth", type=str)
     parser.add_argument('--test_dataset', default='./data/test_data/list.txt', type=str)
-    parser.add_argument('--show_image', default=True, type=bool)
+    parser.add_argument('--show_image', default=False, type=bool)
     args = parser.parse_args()
     return args
 
