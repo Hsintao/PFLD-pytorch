@@ -147,8 +147,8 @@ def main(args):
                             criterion)
 
         scheduler.step(val_loss)
-        print(" weighted_train_loss: {:.4f}, epoch: {}".format(weighted_train_loss, epoch))
-        print("train loss: {:.4f}  val:loss: {:.4f}".format(train_loss, val_loss))
+        logging.info(" weighted_train_loss: {:.4f}, epoch: {}".format(weighted_train_loss, epoch))
+        logging.info("train loss: {:.4f}  val:loss: {:.4f}".format(train_loss, val_loss))
         # writer.add_scalar('data/weighted_loss', weighted_train_loss, epoch)
         # writer.add_scalars('data/loss', {'val loss': val_loss, 'train loss': train_loss}, epoch)
     # writer.close()
