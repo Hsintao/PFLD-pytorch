@@ -130,7 +130,7 @@ def main(args):
         num_workers=args.workers)
 
     # step 4: run
-    writer = SummaryWriter(args.tensorboard)
+    # writer = SummaryWriter(args.tensorboard)
     for epoch in range(args.start_epoch, args.end_epoch + 1):
         weighted_train_loss, train_loss = train(dataloader, plfd_backbone, auxiliarynet,
                                       criterion, optimizer, epoch)
@@ -146,15 +146,17 @@ def main(args):
                             criterion)
 
         scheduler.step(val_loss)
-        writer.add_scalar('data/weighted_loss', weighted_train_loss, epoch)
-        writer.add_scalars('data/loss', {'val loss': val_loss, 'train loss': train_loss}, epoch)
-    writer.close()
+        print(" weighted_train_loss: {:.4f}, epoch: {}".format(weighted_train_loss, epoch))
+        print("train loss: {.4f}  val:loss: {.4f}".format(train_loss, val_loss))
+        # writer.add_scalar('data/weighted_loss', weighted_train_loss, epoch)
+        # writer.add_scalars('data/loss', {'val loss': val_loss, 'train loss': train_loss}, epoch)
+    # writer.close()
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description='pfld')
     # general
-    parser.add_argument('-j', '--workers', default=0, type=int)
+    parser.add_argument('-j', '--workers', default=4, type=int)
     parser.add_argument('--devices_id', default='0', type=str)  # TBD
     parser.add_argument('--test_initial', default='false', type=str2bool)  #TBD
 

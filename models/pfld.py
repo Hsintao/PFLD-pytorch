@@ -99,6 +99,7 @@ class PFLDInference(nn.Module):
         self.avg_pool1 = nn.AvgPool2d(14)
         self.avg_pool2 = nn.AvgPool2d(7)
         self.fc = nn.Linear(176, 196)
+        self.conv9 = nn.Conv2d(176, 196, 1)
 
     def forward(self, x):  # x: 3, 112, 112
         x = self.relu(self.bn1(self.conv1(x)))  # [64, 56, 56]
@@ -129,6 +130,7 @@ class PFLDInference(nn.Module):
 
         multi_scale = torch.cat([x1, x2, x3], 1)
         landmarks = self.fc(multi_scale)
+        # landmarks = landmarks.view(landmarks.size(0), -1)
 
         return out1, landmarks
 
@@ -158,17 +160,22 @@ class AuxiliaryNet(nn.Module):
 
 
 if __name__ == '__main__':
-    input = torch.randn(8, 3, 112, 112)
+    dummy_input = torch.randn(1, 3, 112, 112)
     plfd_backbone = PFLDInference()
+    print(plfd_backbone)
+    from thop import profile
+
+    macs, macs = profile(model=plfd_backbone, inputs=(dummy_input, ), verbose=False)
+    print(f"macs: {macs}, params: {macs}")
     auxiliarynet = AuxiliaryNet()
     import time
     tic = time.time()
-    N = 50
+    N = 100
     for i in range(N):
-        features, landmarks = plfd_backbone(input)
+        features, landmarks_ = plfd_backbone(dummy_input)
     average_infer_time = (time.time() - tic) / N
-    print("averager inference time: {:.4f}, FPS: {:.2f}".format(average_infer_time / input.shape[0],
-                                                                1 * input.shape[0] / average_infer_time))
+    print("averager inference time: {:.4f}, FPS: {:.2f}".format(average_infer_time / dummy_input.shape[0],
+                                                                1 * dummy_input.shape[0] / average_infer_time))
     angle = auxiliarynet(features)
     print("angle.shape:{0:}, landmarks.shape: {1:}".format(
-        angle.shape, landmarks.shape))
+        angle.shape, landmarks_.shape))
