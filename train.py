@@ -147,7 +147,7 @@ def main(args):
 
         scheduler.step(val_loss)
         print(" weighted_train_loss: {:.4f}, epoch: {}".format(weighted_train_loss, epoch))
-        print("train loss: {.4f}  val:loss: {.4f}".format(train_loss, val_loss))
+        print("train loss: {:.4f}  val:loss: {:.4f}".format(train_loss, val_loss))
         # writer.add_scalar('data/weighted_loss', weighted_train_loss, epoch)
         # writer.add_scalars('data/loss', {'val loss': val_loss, 'train loss': train_loss}, epoch)
     # writer.close()
@@ -156,7 +156,7 @@ def main(args):
 def parse_args():
     parser = argparse.ArgumentParser(description='pfld')
     # general
-    parser.add_argument('-j', '--workers', default=4, type=int)
+    parser.add_argument('-j', '--workers', default=16, type=int)
     parser.add_argument('--devices_id', default='0', type=str)  # TBD
     parser.add_argument('--test_initial', default='false', type=str2bool)  #TBD
 
