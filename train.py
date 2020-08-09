@@ -151,11 +151,11 @@ def main(args):
 
         scheduler.step(val_loss)
 
-        weighted_losses.append(weighted_train_loss)
-        train_losses.append(train_loss)
-        val_losses.append(val_loss)
-        logging.info(" weighted_train_loss: {:.4f}, epoch: {}\n".format(weighted_train_loss, epoch))
-        logging.info("train loss: {:.4f}  val:loss: {:.4f}\n".format(train_loss, val_loss))
+        weighted_losses.append(weighted_train_loss.item())
+        train_losses.append(train_loss.item())
+        val_losses.append(val_loss.item())
+        logging.info("epoch: {}, weighted_train_loss: {:.4f}, train loss: {:.4f}  val:loss: {:.4f}\n"
+                     .format(epoch, weighted_train_loss, train_loss, val_loss))
         # writer.add_scalar('data/weighted_loss', weighted_train_loss, epoch)
         # writer.add_scalars('data/loss', {'val loss': val_loss, 'train loss': train_loss}, epoch)
     # writer.close()
