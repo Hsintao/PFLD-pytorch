@@ -155,7 +155,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='pfld')
     # general
     parser.add_argument('-j', '--workers', default=0, type=int)
-    parser.add_argument('--devices_id', default='0', type=str)  #TBD
+    parser.add_argument('--devices_id', default='0', type=str)  # TBD
     parser.add_argument('--test_initial', default='false', type=str2bool)  #TBD
 
     # training

@@ -244,5 +244,5 @@ if __name__ == '__main__':
         else:
             is_train = True
         get_dataset_list(imageDirs, outDir, landmarkDir, is_train)
-        break
+
     print('end')
