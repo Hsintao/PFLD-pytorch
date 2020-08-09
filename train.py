@@ -132,6 +132,9 @@ def main(args):
 
     # step 4: run
     # writer = SummaryWriter(args.tensorboard)
+    weighted_losses = []
+    train_losses = []
+    val_losses = []
     for epoch in range(args.start_epoch, args.end_epoch + 1):
         weighted_train_loss, train_loss = train(dataloader, plfd_backbone, auxiliarynet,
                                       criterion, optimizer, epoch)
@@ -147,11 +150,21 @@ def main(args):
                             criterion)
 
         scheduler.step(val_loss)
-        logging.info(" weighted_train_loss: {:.4f}, epoch: {}".format(weighted_train_loss, epoch))
-        logging.info("train loss: {:.4f}  val:loss: {:.4f}".format(train_loss, val_loss))
+
+        weighted_losses.append(weighted_train_loss)
+        train_losses.append(train_loss)
+        val_losses.append(val_loss)
+        logging.info(" weighted_train_loss: {:.4f}, epoch: {}\n".format(weighted_train_loss, epoch))
+        logging.info("train loss: {:.4f}  val:loss: {:.4f}\n".format(train_loss, val_loss))
         # writer.add_scalar('data/weighted_loss', weighted_train_loss, epoch)
         # writer.add_scalars('data/loss', {'val loss': val_loss, 'train loss': train_loss}, epoch)
     # writer.close()
+    weighted_losses = " ".join(list(map(str, weighted_losses)))
+    train_losses = " ".join(list(map(str, train_losses)))
+    val_losses = " ".join(list(map(str, val_losses)))
+    logging.info(weighted_losses)
+    logging.info(train_losses)
+    logging.info(val_losses)
 
 
 def parse_args():
