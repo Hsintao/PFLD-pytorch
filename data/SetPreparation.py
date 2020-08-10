@@ -67,7 +67,7 @@ class ImageDate():
         self.boxes = []
 
     def load_data(self, is_train, repeat, mirror=None):
-        if (mirror is not None):
+        if mirror is not None:
             with open(mirror, 'r') as f:
                 lines = f.readlines()
                 assert len(lines) == 1
@@ -95,7 +95,7 @@ class ImageDate():
         y2 = min(height, y2)
 
         imgT = img[y1:y2, x1:x2]
-        if (dx > 0 or dy > 0 or edx > 0 or edy > 0):
+        if dx > 0 or dy > 0 or edx > 0 or edy > 0:
             imgT = cv2.copyMakeBorder(
                 imgT, dy, edy, dx, edx, cv2.BORDER_CONSTANT, 0)
         if imgT.shape[0] == 0 or imgT.shape[1] == 0:
@@ -146,7 +146,7 @@ class ImageDate():
                 y2 = min(height, y2)
 
                 imgT = imgT[y1:y2, x1:x2]
-                if (dx > 0 or dy > 0 or edx > 0 or edy > 0):
+                if dx > 0 or dy > 0 or edx > 0 or edy > 0:
                     imgT = cv2.copyMakeBorder(
                         imgT, dy, edy, dx, edx, cv2.BORDER_CONSTANT, 0)
 
@@ -170,8 +170,10 @@ class ImageDate():
         attributes = np.asarray(attributes, dtype=np.int32)
         attributes_str = ' '.join(list(map(str, attributes)))
         labels = []
-        TRACKED_POINTS = [33, 38, 50, 46, 60,
-                          64, 68, 72, 55, 59, 76, 82, 85, 16]
+        TRACKED_POINTS = [33, 38, 50, 46,
+                          60, 64, 68, 72,
+                          55, 59, 76, 82,
+                          85, 16]
         for i, (img, lanmark) in enumerate(zip(self.imgs, self.landmarks)):
             assert lanmark.shape == (98, 2)
             save_path = os.path.join(path, prefix + '_' + str(i) + '.png')
@@ -191,8 +193,7 @@ class ImageDate():
             landmark_str = ' '.join(
                 list(map(str, lanmark.reshape(-1).tolist())))
 
-            label = '{} {} {} {}\n'.format(
-                save_path, landmark_str, attributes_str, euler_angles_str)
+            label = '{} {} {} {}\n'.format(save_path, landmark_str, attributes_str, euler_angles_str)
             labels.append(label)
         return labels
 
