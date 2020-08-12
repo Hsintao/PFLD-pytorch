@@ -129,7 +129,7 @@ def main(args):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Testing')
-    parser.add_argument('--model_path', default="./checkpoint/snapshot/checkpoint_epoch_131.pth", type=str)
+    parser.add_argument('--model_path', default="./checkpoint/snapshot/checkpoint_epoch_168.pth", type=str)
     parser.add_argument('--test_dataset', default='./data/test_data/list.txt', type=str)
     parser.add_argument('--show_image', default=False, type=bool)
     args = parser.parse_args()

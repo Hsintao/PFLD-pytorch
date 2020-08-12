@@ -8,7 +8,7 @@ import onnxsim
 parser = argparse.ArgumentParser(description='pytorch2onnx')
 parser.add_argument(
     '--torch_model',
-    default="./checkpoint/snapshot/checkpoint.pth.tar")
+    default="./checkpoint/snapshot/checkpoint_epoch_308.pth")
 parser.add_argument('--onnx_model', default="./output/pfld.onnx")
 parser.add_argument(
     '--onnx_model_sim',
@@ -19,7 +19,7 @@ args = parser.parse_args()
 print("=====> load pytorch checkpoint...")
 checkpoint = torch.load(args.torch_model, map_location=torch.device('cpu'))
 plfd_backbone = PFLDInference()
-plfd_backbone.load_state_dict(checkpoint['plfd_backbone'])
+plfd_backbone.load_state_dict(checkpoint['plfd_backbone'], strict=False)
 print("PFLD bachbone:", plfd_backbone)
 
 print("=====> convert pytorch model to onnx...")

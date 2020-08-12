@@ -10,7 +10,7 @@ import cv2
 
 
 onnx_model_path = "./output/pfld-sim.onnx"
-img_path = "/Users/xintao/Desktop/图像.jpeg"
+img_path = "/Users/xintao/Desktop/1.png"
 img = cv2.imread(img_path)
 show_img = True
 
@@ -24,7 +24,7 @@ session = onnxruntime.InferenceSession(onnx_model_path, None)
 input_name = session.get_inputs()[0].name
 import time
 tic = time.time()
-for i in range(100):
+for i in range(10):
     output = session.run([], {input_name: image_data})[1]
 
 t = (time.time() - tic) / 100
@@ -37,5 +37,5 @@ if show_img:
     landmarks[:, 1] = landmarks[:, 1] * img.shape[0]
     img_copy = img.copy().astype(np.uint8)
     for (x, y) in landmarks:
-        cv2.circle(img_copy, (int(x), int(y)), 4, (0, 0, 255), -1)
+        cv2.circle(img_copy, (int(x), int(y)), 2, (0, 0, 255), -1)
     cv2.imwrite('result.jpg', img_copy)
