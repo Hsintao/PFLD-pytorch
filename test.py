@@ -105,12 +105,13 @@ def validate(wlfw_val_dataloader, plfd_backbone):
                 nme_list.append(item)
 
         # nme
+        print(len(nme_list))
         print('nme: {:.4f}'.format(np.mean(nme_list)))
         # auc and failure rate
-        failureThreshold = 0.1
-        auc, failure_rate = compute_auc(nme_list, failureThreshold, False)
-        print('auc @ {:.1f} failureThreshold: {:.4f}'.format(failureThreshold, auc))
-        print('failure_rate: {:}'.format(failure_rate))
+        # failureThreshold = 0.1
+        # auc, failure_rate = compute_auc(nme_list, failureThreshold, False)
+        # print('auc @ {:.1f} failureThreshold: {:.4f}'.format(failureThreshold, auc))
+        # print('failure_rate: {:}'.format(failure_rate))
         # inference time
         print("inference_cost_time: {0:4f}".format(np.mean(cost_time)))
 
@@ -129,7 +130,7 @@ def main(args):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Testing')
-    parser.add_argument('--model_path', default="./checkpoint/snapshot/checkpoint_epoch_131.pth", type=str)
+    parser.add_argument('--model_path', default="./checkpoint/snapshot/checkpoint_epoch_168.pth", type=str)
     parser.add_argument('--test_dataset', default='./data/test_data/list.txt', type=str)
     parser.add_argument('--show_image', default=False, type=bool)
     args = parser.parse_args()

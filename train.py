@@ -45,6 +45,8 @@ def str2bool(v):
 def train(train_loader, plfd_backbone, auxiliarynet, criterion, optimizer,
           epoch):
     losses = AverageMeter()
+    plfd_backbone.train()
+    auxiliarynet.train()
 
     for img, landmark_gt, attribute_gt, euler_angle_gt in train_loader:
         img = img.to(device)
@@ -137,7 +139,7 @@ def main(args):
     val_losses = []
     for epoch in range(args.start_epoch, args.end_epoch + 1):
         weighted_train_loss, train_loss = train(dataloader, plfd_backbone, auxiliarynet,
-                                      criterion, optimizer, epoch)
+                                                criterion, optimizer, epoch)
         filename = os.path.join(
             str(args.snapshot), "checkpoint_epoch_" + str(epoch) + '.pth')
         save_checkpoint({

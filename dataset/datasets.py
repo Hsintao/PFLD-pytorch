@@ -1,10 +1,12 @@
 import numpy as np
 import cv2
 import sys
+import random
 sys.path.append('..')
 
 from torch.utils import data
 from torch.utils.data import DataLoader
+
 
 def flip(img, annotation):
     # parse
@@ -31,8 +33,9 @@ def flip(img, annotation):
     
     return img, new_annotation
 
+
 def channel_shuffle(img, annotation):
-    if(img.shape[2] == 3):
+    if img.shape[2] == 3:
         ch_arr = [0, 1, 2]
         np.random.shuffle(ch_arr)
         img = img[..., ch_arr]
@@ -49,11 +52,13 @@ def random_noise(img, annotation, limit=[0, 0.2], p=0.5):
         
     return img, annotation
 
+
 def random_brightness(img, annotation, brightness=0.3):
     alpha = 1 + np.random.uniform(-brightness, brightness)
     img = alpha * image
     img = np.clip(img, 0, 255).astype(np.uint8)
     return img, annotation
+
 
 def random_contrast(img, annotation, contrast=0.3):
     coef = np.array([[[0.114, 0.587,  0.299]]])   # rgb to gray (YCbCr)
@@ -64,6 +69,7 @@ def random_contrast(img, annotation, contrast=0.3):
     img = np.clip(img, 0, 255).astype(np.uint8)
     return img, annotation
 
+
 def random_saturation(img, annotation, saturation=0.5):
     coef = nd.array([[[0.299, 0.587, 0.114]]])
     alpha = np.random.uniform(-saturation, saturation)
@@ -72,6 +78,7 @@ def random_saturation(img, annotation, saturation=0.5):
     img = alpha*img  + (1.0 - alpha)*gray
     img = np.clip(img, 0, 255).astype(np.uint8)
     return img, annotation
+
 
 def random_hue(image, annotation, hue=0.5):
     h = int(np.random.uniform(-hue, hue)*180)
@@ -108,7 +115,6 @@ def scale(img, annotation):
 
 
 def rotate(img, annotation, alpha=30):
-    
     bbox = annotation[0:4]
     landmark_x = annotation[4::2]
     landmark_y = annotation[4+1::2] 
@@ -165,11 +171,12 @@ class WLFWDatasets(data.Dataset):
 
 
 if __name__ == '__main__':
-    file_list = './data/test_data/list.txt'
+    file_list = '../data/test_data/list.txt'
     wlfwdataset = WLFWDatasets(file_list)
-    dataloader = DataLoader(wlfwdataset, batch_size=256, shuffle=True, num_workers=0, drop_last=False)
+    dataloader = DataLoader(wlfwdataset, batch_size=16, shuffle=True, num_workers=0, drop_last=False)
     for img, landmark, attribute, euler_angle in dataloader:
         print("img shape", img.shape)
         print("landmark size", landmark.size())
         print("attrbute size", attribute)
         print("euler_angle", euler_angle.size())
+        break

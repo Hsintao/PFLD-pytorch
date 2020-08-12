@@ -9,6 +9,7 @@ data/WFLW
 .DS_Store
 output
 data/WFLW_images.tar.gz
+checkpoint/train.logs
 # C extensions
 *.so
 
